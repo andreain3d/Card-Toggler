@@ -11,10 +11,10 @@ public class OnOffController {
 
     @Value("${api.key}")
     private String apiKey;
-    
+
     public String onOff;
 
-    @PostMapping("/onOff")
+    @PostMapping("/onoff")
     public String onOff() {
         String url = "https://anypoint.mulesoft.com/mocking/api/v1/links/2107a7ca-f0f9-4894-93f3-a6f18e9c9f63/cardcontrols/onoff/0001";
         RestTemplate restTemplate = new RestTemplate();
