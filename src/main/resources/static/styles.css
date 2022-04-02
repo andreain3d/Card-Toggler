@@ -35,7 +35,7 @@ h4 {
 }
 
 .footer {
-    position: absolute;
+    position: fixed;
     bottom: 0;
     height: 7%;
     width: 100%;
@@ -51,4 +51,24 @@ h4 {
 .back-button__label {
     color: #fff;
     fill: #fff;
+}
+
+#report-details {
+    width: 100%;
+}
+
+.submit-btn-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      align-items: center;
+      padding: 10px;
+}
+
+.button {
+    background-color: #00693C;
+}
+
+section {
+    margin-bottom: 10%;
 }

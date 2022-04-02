@@ -99,7 +99,7 @@ function toggleActivationHandler() {
                         userInfo.cards[$('ons-select')[0].selectedIndex].active = true;
                         ons.notification.toast("Your card ending in " + userInfo.cards[$('ons-select')[0].selectedIndex].maskedCardNumber + " has been successfully enabled.", { timeout: 1500, animation: 'fade' })
                     } else {
-                        ons.notification.toast("An error has occurred.")
+                        ons.notification.toast("An error has occurred.", { timeout: 1500, animation: 'fade' })
                     }
                 })
 
@@ -113,33 +113,49 @@ function setCardImage (maskedNum) {
     $('.card').css("background-image", "url(\"cc1.jpg\")");
 }
 
-document.addEventListener('init', function(event) {
+async function sendReportData(reportData) {
+    console.log(reportData);
+    let response;
 
+    try{
+        response = await $.ajax({
+            url: '/report',
+            type: 'POST',
+            data: reportData
+        })
+
+        return response;
+    }catch(err) {
+        console.log("Error sending toggle data: " + JSON.stringify(err));
+    };
+};
+
+function reportSubmitHandler () {
+    const reportData = { "cardId": userInfo.cards[$('ons-select')[0].selectedIndex].cardId,
+                          "cardStatus": $('#report-select')[0].value,
+                           "comment": $('#report-details')[0].value };
+    console.log(reportData);
+    sendReportData(reportData).then((data) => {
+            console.log(data);
+            ons.notification.toast("Your report has been submitted successfully.", { timeout: 1500, animation: 'fade' });
+        })
+};
+
+document.addEventListener('init', function(event) {
     console.log("init running");
-    var page = event.target;
+    let page = event.target;
 
     if (page.id === 'cards') {
       page.querySelector('#report-button').onclick = function() {
         document.querySelector('#appNavigator').pushPage('report.html', {data: {cardInfo: userInfo.cards[$('ons-select')[0].selectedIndex]}});
       };
     } else if (page.id === 'report') {
-          setCardImage(page.data.cardInfo.maskedCardNumber);
-        }
-  });
-
-//$(document).on('init', function(event){
-//    console.log("init running");
-//    const page = event.target;
-//
-//    if (page.id === 'cards') {
-//        $("#report-button").on('click', function() {
-//            $("#appNavigator").pushPage('report.html');
-//        })
-//    }
-//});
+      setCardImage(page.data.cardInfo.maskedCardNumber);
+    }
+});
 
 $(document).ready(function(){
-
+    console.log($('ons-select'));
     getUserInfo();
     toggleActivationHandler();
 });
