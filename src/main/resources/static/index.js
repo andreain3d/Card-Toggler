@@ -8,7 +8,7 @@ const userInfo = {
 
 function greet() {
     $('#greeting').text('Welcome, ' + userInfo.cardHolder + '!');
-    $('#greeting').delay(2000).animate({ opacity: 100 }, {easing: "swing", duration: 500});
+    $('#greeting').fadeTo("slow", 100);
     $('#greeting').delay(2000).animate({ opacity: 0 });
 }
 
@@ -25,11 +25,14 @@ function getUserInfo () {
                 userInfo.cards[i].active = true;
             }
             console.log("Retrieved userInfo: " + JSON.stringify(userInfo));
-            for (let i=0; i < userInfo.cards.length; i++ ){
-                $('#card-select').append("<option value=\"" + userInfo.cards[i].maskedCardNumber + "\">Card ending in " + userInfo.cards[i].maskedCardNumber + "</option>")
-            }
+             for (let i=0; i < userInfo.cards.length; i++ ){
+                 $('#select-input select').append($('<option>', {
+                     value: userInfo.cards[i].maskedCardNumber,
+                     text: "Your Card ending in " + userInfo.cards[i].maskedCardNumber
+                 }));
+             }
             greet();
-            setCardImage();
+            setCardImage($('ons-select')[0].value);
         },
         error: function (error) {
             console.log(`Error retrieving user data: ${error}`);
@@ -37,51 +40,41 @@ function getUserInfo () {
     })
 }
 
-function cardChangeHandler () {
-    $('#card-select').change(
-        function(){
-            $('.card').text('Card ending in ' + $('#card-select').val())
-            $('#toggle-activation').remove();
+function cardChangeHandler (event) {
+        $('.card').text('Card ending in ' + event.target.value)
+                $('#toggle-activation').remove();
 
-            if (
-                userInfo.cards[$('#card-select').prop('selectedIndex')].active
-            ) {
-                $('#switch-container').append("<ons-switch checked id=\"toggle-activation\"></ons-switch>");
-//                $('#switch-container').append("<input checked type=\"checkbox\" id=\"toggle-activation\">");
-                toggleActivationHandler();
-            } else {
-            $('#switch-container').append("<ons-switch id=\"toggle-activation\"></ons-switch>");
-//                $('#switch-container').append("<input type=\"checkbox\" id=\"toggle-activation\">");
-                toggleActivationHandler();
-            };
-        });
+                if (
+                    userInfo.cards[$('ons-select')[0].selectedIndex].active
+                ) {
+                    $('#switch-container').append("<ons-switch checked id=\"toggle-activation\"></ons-switch>");
+                    toggleActivationHandler();
+                } else {
+                    $('#switch-container').append("<ons-switch id=\"toggle-activation\"></ons-switch>");
+                    toggleActivationHandler();
+                };
 
-}
+};
 
 function toggleActivationHandler() {
     $('#toggle-activation').change(
         function(){
-            if (
-                userInfo.cards[$('#card-select').prop('selectedIndex')].active
-            ) {
-                userInfo.cards[$('#card-select').prop('selectedIndex')].active = false;
-                ons.notification.toast("Your card ending in " + $('#card-select').val() + " has been successfully disabled.", { timeout: 1500, animation: 'fade' })
-//                window.alert("Your card ending in " + $('#card-select').val() + " has been successfully deactivated!")
+            if (userInfo.cards[$('ons-select')[0].selectedIndex].active) {
+                userInfo.cards[$('ons-select')[0].selectedIndex].active = false;
+                ons.notification.toast("Your card ending in " + userInfo.cards[$('ons-select')[0].selectedIndex].maskedCardNumber + " has been successfully disabled.", { timeout: 1500, animation: 'fade' })
             } else {
-                userInfo.cards[$('#card-select').prop('selectedIndex')].active = true;
-                ons.notification.toast("Your card ending in " + $('#card-select').val() + " has been successfully enabled.", { timeout: 1500, animation: 'fade' })
-//                window.alert("Your card ending in " + $('#card-select').val() + " has been successfully activated!")
+                userInfo.cards[$('ons-select')[0].selectedIndex].active = true;
+                ons.notification.toast("Your card ending in " + userInfo.cards[$('ons-select')[0].selectedIndex].maskedCardNumber + " has been successfully enabled.", { timeout: 1500, animation: 'fade' })
             };
         }
     )
 }
 
-function setCardImage () {
-    $('.card').text('Card ending in ' + $('#card-select').val());
+function setCardImage (maskedNum) {
+    $('.card').text('Card ending in ' + maskedNum);
 }
 
 $(document).ready(function(){
     getUserInfo();
-    cardChangeHandler();
     toggleActivationHandler();
 });

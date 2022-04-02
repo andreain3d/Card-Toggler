@@ -22,12 +22,14 @@
 
     <Section id="main-content">
         <div class="card-container">
-            <h3 id="greeting"></h3>
+            <h3 id="greeting">Loading...</h3>
             <div class="card">
                 Loading...
             </div>
-            <select name="cards" id="card-select">
-            </select>
+<!--            <select name="cards" id="card-select">-->
+<!--            </select>-->
+            <ons-select  id="select-input" onchange="cardChangeHandler(event)" style="min-width: 200px">
+            </ons-select>
             <br />
         </div>
             <ons-list-title>Actions</ons-list-title>
