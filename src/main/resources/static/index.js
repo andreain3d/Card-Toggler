@@ -56,15 +56,47 @@ function cardChangeHandler (event) {
 
 };
 
+async function sendToggleData(toggleData) {
+    let response;
+
+    try{
+        response = await $.ajax({
+            url: '/onoff',
+            type: 'POST',
+            data: toggleData
+        })
+
+        return response;
+    }catch(err) {
+        console.log("Error sending toggle data: " + err);
+    };
+};
+
 function toggleActivationHandler() {
     $('#toggle-activation').change(
         function(){
             if (userInfo.cards[$('ons-select')[0].selectedIndex].active) {
-                userInfo.cards[$('ons-select')[0].selectedIndex].active = false;
-                ons.notification.toast("Your card ending in " + userInfo.cards[$('ons-select')[0].selectedIndex].maskedCardNumber + " has been successfully disabled.", { timeout: 1500, animation: 'fade' })
+                sendToggleData({"active":false}).then((data) => {
+                console.log(data);
+                    if(JSON.parse(data).message == "okay"){
+                        userInfo.cards[$('ons-select')[0].selectedIndex].active = false;
+                       ons.notification.toast("Your card ending in " + userInfo.cards[$('ons-select')[0].selectedIndex].maskedCardNumber + " has been successfully disabled.", { timeout: 1500, animation: 'fade' })
+                    } else {
+                        ons.notification.toast("An error has occurred.")
+                    }
+                });
+
             } else {
-                userInfo.cards[$('ons-select')[0].selectedIndex].active = true;
-                ons.notification.toast("Your card ending in " + userInfo.cards[$('ons-select')[0].selectedIndex].maskedCardNumber + " has been successfully enabled.", { timeout: 1500, animation: 'fade' })
+                sendToggleData({"active": true}).then((data) => {
+                    console.log(data);
+                    if(JSON.parse(data).message == "okay"){
+                        userInfo.cards[$('ons-select')[0].selectedIndex].active = true;
+                        ons.notification.toast("Your card ending in " + userInfo.cards[$('ons-select')[0].selectedIndex].maskedCardNumber + " has been successfully enabled.", { timeout: 1500, animation: 'fade' })
+                    } else {
+                        ons.notification.toast("An error has occurred.")
+                    }
+                })
+
             };
         }
     )

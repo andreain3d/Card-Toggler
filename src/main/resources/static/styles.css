@@ -8,10 +8,7 @@ h4 {
 }
 
 #main-content {
-  display: flex;
-flex-direction: column;
-  justify-content: center;
-  align-items: center;
+
 }
 
 .card-container {
