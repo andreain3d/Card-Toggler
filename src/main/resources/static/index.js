@@ -6,6 +6,8 @@ const userInfo = {
 //    ]
 };
 
+const userId = "012345";
+
 function greet() {
     $('#greeting').text('Welcome, ' + userInfo.cardHolder + '!');
     $('#greeting').fadeTo("slow", 100);
@@ -13,8 +15,9 @@ function greet() {
 }
 
 function getUserInfo () {
+    console.log("userId: " + userId);
     $.ajax({
-        url: '/userInfo',
+        url: '/userInfo/' + userId,
         type: "GET",
         success: function (data) {
             let info = JSON.parse(data);
