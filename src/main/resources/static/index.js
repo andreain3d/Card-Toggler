@@ -113,7 +113,33 @@ function setCardImage (maskedNum) {
     $('.card').css("background-image", "url(\"cc1.jpg\")");
 }
 
+document.addEventListener('init', function(event) {
+
+    console.log("init running");
+    var page = event.target;
+
+    if (page.id === 'cards') {
+      page.querySelector('#report-button').onclick = function() {
+        document.querySelector('#appNavigator').pushPage('report.html', {data: {cardInfo: userInfo.cards[$('ons-select')[0].selectedIndex]}});
+      };
+    } else if (page.id === 'report') {
+          setCardImage(page.data.cardInfo.maskedCardNumber);
+        }
+  });
+
+//$(document).on('init', function(event){
+//    console.log("init running");
+//    const page = event.target;
+//
+//    if (page.id === 'cards') {
+//        $("#report-button").on('click', function() {
+//            $("#appNavigator").pushPage('report.html');
+//        })
+//    }
+//});
+
 $(document).ready(function(){
+
     getUserInfo();
     toggleActivationHandler();
 });

@@ -15,6 +15,9 @@
 
 <body>
 
+<ons-navigator id="appNavigator" page="cards.html" animation="slide"></ons-navigator>
+
+<template id="cards.html">
 <ons-page id="cards">
     <ons-toolbar>
         <div class="center"><h4>Manage Your Cards</h4></div>
@@ -53,7 +56,45 @@
     <div class="footer"></div>
 
 </ons-page>
+</template>
 
+<template id="report.html">
+    <ons-page id="report">
+        <ons-toolbar>
+            <div class="left"><ons-back-button>Back</ons-back-button></div>
+            <div class="center"><h4>Report an Issue</h4></div>
+        </ons-toolbar>
+        <section id="report-form">
+            <div class="card-container">
+                <div class="card">Loading...</div>
+            </div>
+            <ons-list modifier="inset">
+                <ons-list-header>Text input</ons-list-header>
+                <ons-list-item>
+                    <div class="center">
+                        <ons-select id="select-input" style="width: 120px">
+                            <option value="Lost">
+                                Lost
+                            </option>
+                            <option value="Destroyed">
+                                Destroyed
+                            </option>
+                            <option value="Information Compromised">
+                                Information Compromised
+                            </option>
+                        </ons-select>
+
+                    </div>
+                </ons-list-item>
+                <ons-list-item class="input-items">
+                    <label class="center">
+                        <ons-input id="name-input" float maxlength="400" placeholder="Describe your issue..."></ons-input>
+                    </label>
+                </ons-list-item>
+            </ons-list>
+        </section>
+    </ons-page>
+</template>
 
 <script src="index.js"></script>
 </body>

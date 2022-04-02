@@ -42,3 +42,13 @@ h4 {
     background-color: #00A950;
 
 }
+
+.back-button__icon {
+    color: #fff;
+    fill: #fff;
+}
+
+.back-button__label {
+    color: #fff;
+    fill: #fff;
+}
