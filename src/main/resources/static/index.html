@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Card Management</title>
+    <title>Manage Your Cards</title>
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsenui.css" />
     <link
@@ -22,16 +22,12 @@
     <ons-toolbar>
         <div class="center"><h4>Manage Your Cards</h4></div>
     </ons-toolbar>
-
-    <Section id="main-content">
+    <Section id="card-overview">
         <div class="card-container">
             <h3 id="greeting">Loading...</h3>
             <div class="card">
-                <ons-progress-circular indeterminate></ons-progress-circular><br/>
-                Loading...
+                <ons-progress-circular indeterminate></ons-progress-circular>
             </div>
-<!--            <select name="cards" id="card-select">-->
-<!--            </select>-->
             <ons-select  id="select-input" onchange="cardChangeHandler(event)" style="min-width: 200px">
             </ons-select>
             <br />
@@ -43,7 +39,6 @@
                         <div class="right">
                         <span id="switch-container">
                             <ons-switch checked id="toggle-activation"></ons-switch>
-<!--                        <input checked type="checkbox" id="toggle-activation">-->
                         </span>
                         </div>
                     </ons-list-item>
@@ -66,13 +61,15 @@
         </ons-toolbar>
         <section id="report-form">
             <div class="card-container">
-                <div class="card">Loading...</div>
+                <div class="card">
+                    <ons-progress-circular indeterminate></ons-progress-circular>
+                </div>
             </div>
             <ons-list modifier="inset">
                 <ons-list-header>Card Status</ons-list-header>
                 <ons-list-item>
                     <div class="center">
-                        <ons-select select-id="report-select" style="width: 120px">
+                        <ons-select select-id="report-select" style="min-width: 200px">
                             <option value="Lost">
                                 Lost
                             </option>
@@ -100,6 +97,7 @@
                 <ons-button id="report-submit" onClick="reportSubmitHandler()">Submit Report</ons-button>
             </div>
         </section>
+        <div class="footer"></div>
     </ons-page>
 </template>
 

@@ -7,10 +7,6 @@ h4 {
     margin: 10px;
 }
 
-#main-content {
-
-}
-
 .card-container {
     display: flex;
     flex-direction: column;
@@ -72,3 +68,9 @@ h4 {
 section {
     margin-bottom: 10%;
 }
+
+@media (min-width: 1000px) {
+    section {
+      padding: 0% 15%;
+    }
+  }

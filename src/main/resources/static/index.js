@@ -1,13 +1,10 @@
 const userInfo = {
-//    "cardHolder":"Dave Normalname",
-//    "cards":[
-//        {"cardId":"0001","cardName":"Rewards Card","maskedCardNumber":"xx0455", "active":true},
-//        {"cardId":"0002","cardName":"Cash Back Card","maskedCardNumber":"xx0456", "active":true}
-//    ]
 };
 
+// Dummy userId in place of info given by auth
 const userId = "012345";
-//const cardId = "0001";
+
+let currentCard;
 
 function greet() {
     $('#greeting').text('Welcome, ' + userInfo.cardHolder + '!');
@@ -15,54 +12,71 @@ function greet() {
     $('#greeting').delay(2000).animate({ opacity: 0 });
 }
 
+function setCardImage (maskedCardNumber) {
+    $('.card').text('Card ending in ' + maskedCardNumber);
+    $('.card').css("background-image", "url(\"cc1.jpg\")");
+}
+
 function getUserInfo () {
-    console.log("userId: " + userId);
     $.ajax({
         url: '/userInfo/' + userId,
         type: "GET",
+
         success: function (data) {
             let info = JSON.parse(data);
             userInfo.cardHolder = info.cardHolder;
             userInfo.cards = info.cards;
-            //initializing 'active' status as true as dummy info for the property
+
+            //initializing 'active' status to true as dummy info for the property
             for (let i = 0; i < userInfo.cards.length; i++){
                 userInfo.cards[i].active = true;
             }
-            console.log("Retrieved userInfo: " + JSON.stringify(userInfo));
+
+            // Creating select options for each card
              for (let i=0; i < userInfo.cards.length; i++ ){
                  $('#select-input select').append($('<option>', {
                      value: userInfo.cards[i].maskedCardNumber,
                      text: userInfo.cards[i].cardName+ " " + userInfo.cards[i].maskedCardNumber
                  }));
              }
+
+            // Initial display functions using retrieved data, setting currentCard
             greet();
             setCardImage($('ons-select')[0].value);
+            currentCard = userInfo.cards[$('ons-select')[0].selectedIndex];
         },
         error: function (error) {
+            ons.notification.toast("An error has occurred. Please try again.");
             console.log(`Error retrieving user data: ${error}`);
         }
     })
 }
 
 function cardChangeHandler (event) {
+        // Setting currentCard to newly selected card
+        currentCard = userInfo.cards[$('ons-select')[0].selectedIndex];
+
+        // Changing card display
         $('.card').text('Card ending in ' + event.target.value);
         $('.card').css("background-image", "url(\"cc1.jpg\")");
-                $('#toggle-activation').remove();
 
-                if (
-                    userInfo.cards[$('ons-select')[0].selectedIndex].active
-                ) {
-                    $('#switch-container').append("<ons-switch checked id=\"toggle-activation\"></ons-switch>");
-                    toggleActivationHandler();
-                } else {
-                    $('#switch-container').append("<ons-switch id=\"toggle-activation\"></ons-switch>");
-                    toggleActivationHandler();
-                };
+        // Setting toggle to correct initial display.
+        // Removes toggle and regenerates dynamically in correct position based on active status
+        $('#toggle-activation').remove();
+        if (
+            currentCard.active
+        ) {
+            $('#switch-container').append("<ons-switch checked id=\"toggle-activation\"></ons-switch>");
+            toggleActivationHandler();
+        } else {
+            $('#switch-container').append("<ons-switch id=\"toggle-activation\"></ons-switch>");
+             toggleActivationHandler();
+        };
 
 };
 
+// Post request to /onoff to toggle
 async function sendToggleData(cardId, toggleData) {
-    console.log(cardId);
     let response;
 
     try{
@@ -78,28 +92,37 @@ async function sendToggleData(cardId, toggleData) {
     };
 };
 
-function toggleActivationHandler() {
+// Sets listener for toggle change, calls the sendToggleData ajax request, 
+// then changes local data for card active status and toast alerts success/failure
+function toggleActivationHandler() { 
     $('#toggle-activation').change(
         function(){
-            if (userInfo.cards[$('ons-select')[0].selectedIndex].active) {
-                sendToggleData(userInfo.cards[$('ons-select')[0].selectedIndex].cardId, {"active":false}).then((data) => {
-                console.log(data);
+            $('#toggle-activation').prop('disabled', true)
+
+            if (currentCard.active) {
+                sendToggleData(currentCard.cardId, {"active":false}).then((data) => {
                     if(JSON.parse(data).message == "okay"){
-                        userInfo.cards[$('ons-select')[0].selectedIndex].active = false;
-                       ons.notification.toast("Your card ending in " + userInfo.cards[$('ons-select')[0].selectedIndex].maskedCardNumber + " has been successfully disabled.", { timeout: 1500, animation: 'fade' })
+                        currentCard.active = false;
+                       ons.notification.toast("Your card ending in " + currentCard.maskedCardNumber + " has been successfully disabled.", { timeout: 1500, animation: 'fade' });
+                       $('#toggle-activation').prop('disabled', false);
                     } else {
-                        ons.notification.toast("An error has occurred.")
+                        ons.notification.toast("An error has occurred.", { timeout: 1500, animation: 'fade' });
+                        $('#toggle-activation').prop('checked', true);
+                        $('#toggle-activation').prop('disabled', false);
+
                     }
                 });
 
             } else {
-                sendToggleData(userInfo.cards[$('ons-select')[0].selectedIndex].cardId, {"active": true}).then((data) => {
-                    console.log(data);
+                sendToggleData(currentCard.cardId, {"active": true}).then((data) => {
                     if(JSON.parse(data).message == "okay"){
-                        userInfo.cards[$('ons-select')[0].selectedIndex].active = true;
-                        ons.notification.toast("Your card ending in " + userInfo.cards[$('ons-select')[0].selectedIndex].maskedCardNumber + " has been successfully enabled.", { timeout: 1500, animation: 'fade' })
+                        currentCard.active = true;
+                        ons.notification.toast("Your card ending in " + currentCard.maskedCardNumber + " has been successfully enabled.", { timeout: 1500, animation: 'fade' });
+                        $('#toggle-activation').prop('disabled', false);
                     } else {
                         ons.notification.toast("An error has occurred.", { timeout: 1500, animation: 'fade' })
+                        $('#toggle-activation').prop('checked', false);
+                        $('#toggle-activation').prop('disabled', false);
                     }
                 })
 
@@ -108,13 +131,9 @@ function toggleActivationHandler() {
     )
 }
 
-function setCardImage (maskedNum) {
-    $('.card').text('Card ending in ' + maskedNum);
-    $('.card').css("background-image", "url(\"cc1.jpg\")");
-}
 
+// Post request for /report
 async function sendReportData(reportData) {
-    console.log(reportData);
     let response;
 
     try{
@@ -126,28 +145,35 @@ async function sendReportData(reportData) {
 
         return response;
     }catch(err) {
-        console.log("Error sending toggle data: " + JSON.stringify(err));
+        console.log("Error sending report data: " + JSON.stringify(err));
     };
 };
 
+// Builds data object to post to /request, then passes data to post call and toast alerts success/failure
 function reportSubmitHandler () {
-    const reportData = { "cardId": userInfo.cards[$('ons-select')[0].selectedIndex].cardId,
+    const reportData = { "cardId": currentCard.cardId,
                           "cardStatus": $('#report-select')[0].value,
                            "comment": $('#report-details')[0].value };
-    console.log(reportData);
+
     sendReportData(reportData).then((data) => {
-            console.log(data);
-            ons.notification.toast("Your report has been submitted successfully.", { timeout: 1500, animation: 'fade' });
+            $('#report-details')[0].value = "";
+            if (JSON.parse(data).message == "okay") {
+                ons.notification.toast("Your report has been submitted successfully.", { timeout: 1500, animation: 'fade' });
+            } else {
+                ons.notification.toast("An error has occurred.", { timeout: 1500, animation: 'fade' })
+            }
+            
         })
 };
 
+// Set up for ons-navigator
+// Passes currentCard across to report page
 document.addEventListener('init', function(event) {
-    console.log("init running");
     let page = event.target;
 
     if (page.id === 'cards') {
       page.querySelector('#report-button').onclick = function() {
-        document.querySelector('#appNavigator').pushPage('report.html', {data: {cardInfo: userInfo.cards[$('ons-select')[0].selectedIndex]}});
+        document.querySelector('#appNavigator').pushPage('report.html', {data: {cardInfo: currentCard}});
       };
     } else if (page.id === 'report') {
       setCardImage(page.data.cardInfo.maskedCardNumber);
@@ -155,7 +181,6 @@ document.addEventListener('init', function(event) {
 });
 
 $(document).ready(function(){
-    console.log($('ons-select'));
     getUserInfo();
     toggleActivationHandler();
 });

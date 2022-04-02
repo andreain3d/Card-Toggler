@@ -24,7 +24,6 @@ public class ReportController {
         headers.set("content-type", "application/json");
 
         String body = reportData;
-        System.out.println("body " + body);
 
         HttpEntity<String> request = new HttpEntity<String>(body, headers);
         ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, request, String.class);

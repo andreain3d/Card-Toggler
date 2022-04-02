@@ -19,7 +19,6 @@ public class UserInfoController {
     @GetMapping(value = "/userInfo/{userId}")
     @ResponseBody
     public String userInfo(@PathVariable String userId) {
-        System.out.println("userId: " + userId);
         String url = "https://anypoint.mulesoft.com/mocking/api/v1/links/2107a7ca-f0f9-4894-93f3-a6f18e9c9f63/cardInfo/" + userId;
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
