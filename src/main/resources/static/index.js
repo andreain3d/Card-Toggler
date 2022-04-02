@@ -7,6 +7,7 @@ const userInfo = {
 };
 
 const userId = "012345";
+const cardId = "0001";
 
 function greet() {
     $('#greeting').text('Welcome, ' + userInfo.cardHolder + '!');
@@ -64,14 +65,14 @@ async function sendToggleData(toggleData) {
 
     try{
         response = await $.ajax({
-            url: '/onoff',
+            url: '/onoff/' + cardId,
             type: 'POST',
             data: toggleData
         })
 
         return response;
     }catch(err) {
-        console.log("Error sending toggle data: " + err);
+        console.log("Error sending toggle data: " + JSON.stringify(err));
     };
 };
 

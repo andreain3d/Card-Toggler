@@ -1,5 +1,7 @@
 package com.example.cardtoggler.cardtoggler.controllers;
 
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
@@ -14,9 +16,10 @@ public class OnOffController {
 
     public String onOff;
 
-    @PostMapping("/onoff")
-    public String onOff() {
-        String url = "https://anypoint.mulesoft.com/mocking/api/v1/links/2107a7ca-f0f9-4894-93f3-a6f18e9c9f63/cardcontrols/onoff/0001";
+    @PostMapping("/onoff/{cardId}")
+    @ResponseBody
+    public String onOff(@PathVariable String cardId) {
+        String url = "https://anypoint.mulesoft.com/mocking/api/v1/links/2107a7ca-f0f9-4894-93f3-a6f18e9c9f63/cardcontrols/onoff/" + cardId;
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.set("API-Key", apiKey);
