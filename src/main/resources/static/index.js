@@ -6,6 +6,12 @@ const userInfo = {
 //    ]
 };
 
+function greet() {
+    $('#greeting').text('Welcome, ' + userInfo.cardHolder + '!');
+    $('#greeting').delay(2000).animate({ opacity: 100 }, {easing: "swing", duration: 500});
+    $('#greeting').delay(2000).animate({ opacity: 0 });
+}
+
 function getUserInfo () {
     $.ajax({
         url: '/userInfo',
@@ -22,7 +28,7 @@ function getUserInfo () {
             for (let i=0; i < userInfo.cards.length; i++ ){
                 $('#card-select').append("<option value=\"" + userInfo.cards[i].maskedCardNumber + "\">Card ending in " + userInfo.cards[i].maskedCardNumber + "</option>")
             }
-            $('#greeting').text('Welcome, ' + userInfo.cardHolder + '!')
+            greet();
             setCardImage();
         },
         error: function (error) {

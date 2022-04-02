@@ -14,20 +14,22 @@
 </head>
 
 <body>
+
 <ons-page id="cards">
     <ons-toolbar>
         <div class="center"><h4>Manage Your Cards</h4></div>
     </ons-toolbar>
 
     <Section id="main-content">
-        <h3 id="greeting"></h3>
-        <ons class="card-container">
+        <div class="card-container">
+            <h3 id="greeting"></h3>
             <div class="card">
                 Loading...
             </div>
             <select name="cards" id="card-select">
             </select>
             <br />
+        </div>
             <ons-list-title>Actions</ons-list-title>
                 <ons-list modifier="inset">
                     <ons-list-item>
@@ -39,10 +41,17 @@
                         </span>
                         </div>
                     </ons-list-item>
+                    <ons-list-item modifier="chevron" tappable id="report-button">
+                        <p class="button-text">Report a Card Issue</p>
+                    </ons-list-item>
                 </ons-list>
+
     </Section>
+    <div class="footer"></div>
 
 </ons-page>
+
+
 <script src="index.js"></script>
 </body>
 </html>
