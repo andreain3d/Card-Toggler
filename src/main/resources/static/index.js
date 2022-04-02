@@ -40,10 +40,12 @@ function cardChangeHandler () {
             if (
                 userInfo.cards[$('#card-select').prop('selectedIndex')].active
             ) {
-                $('#switch-container').append("<input checked type=\"checkbox\" id=\"toggle-activation\">");
+                $('#switch-container').append("<ons-switch checked id=\"toggle-activation\"></ons-switch>");
+//                $('#switch-container').append("<input checked type=\"checkbox\" id=\"toggle-activation\">");
                 toggleActivationHandler();
             } else {
-                $('#switch-container').append("<input type=\"checkbox\" id=\"toggle-activation\">");
+            $('#switch-container').append("<ons-switch id=\"toggle-activation\"></ons-switch>");
+//                $('#switch-container').append("<input type=\"checkbox\" id=\"toggle-activation\">");
                 toggleActivationHandler();
             };
         });
@@ -57,10 +59,12 @@ function toggleActivationHandler() {
                 userInfo.cards[$('#card-select').prop('selectedIndex')].active
             ) {
                 userInfo.cards[$('#card-select').prop('selectedIndex')].active = false;
-                window.alert("Your card ending in " + $('#card-select').val() + " has been successfully deactivated!")
+                ons.notification.toast("Your card ending in " + $('#card-select').val() + " has been successfully disabled.", { timeout: 1500, animation: 'fade' })
+//                window.alert("Your card ending in " + $('#card-select').val() + " has been successfully deactivated!")
             } else {
                 userInfo.cards[$('#card-select').prop('selectedIndex')].active = true;
-                window.alert("Your card ending in " + $('#card-select').val() + " has been successfully activated!")
+                ons.notification.toast("Your card ending in " + $('#card-select').val() + " has been successfully enabled.", { timeout: 1500, animation: 'fade' })
+//                window.alert("Your card ending in " + $('#card-select').val() + " has been successfully activated!")
             };
         }
     )

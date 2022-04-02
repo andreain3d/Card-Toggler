@@ -21,20 +21,25 @@
 
     <Section id="main-content">
         <h3 id="greeting"></h3>
-        <div class="card-container">
+        <ons class="card-container">
             <div class="card">
                 Loading...
             </div>
             <select name="cards" id="card-select">
             </select>
             <br />
-            <div>
-                <label for="toggle-activation">Card Active</label>
-                <span id="switch-container">
-            <input checked type="checkbox" id="toggle-activation">
-        </span>
-            </div>
-        </div>
+            <ons-list-title>Actions</ons-list-title>
+                <ons-list modifier="inset">
+                    <ons-list-item>
+                        Card Enabled
+                        <div class="right">
+                        <span id="switch-container">
+                            <ons-switch checked id="toggle-activation"></ons-switch>
+<!--                        <input checked type="checkbox" id="toggle-activation">-->
+                        </span>
+                        </div>
+                    </ons-list-item>
+                </ons-list>
     </Section>
 
 </ons-page>
