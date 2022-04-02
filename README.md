@@ -21,3 +21,8 @@ file, save the following text with your key:
 
 api.key=YOUR_API_KEY_HERE
 
+## Next Steps
+
+Going forward, improvements I would make to this project:
+* Writing unit tests
+* Addressing accessibility
