@@ -32,7 +32,7 @@ function getUserInfo () {
              for (let i=0; i < userInfo.cards.length; i++ ){
                  $('#select-input select').append($('<option>', {
                      value: userInfo.cards[i].maskedCardNumber,
-                     text: "Your Card ending in " + userInfo.cards[i].maskedCardNumber
+                     text: userInfo.cards[i].cardName+ " " + userInfo.cards[i].maskedCardNumber
                  }));
              }
             greet();
@@ -45,7 +45,8 @@ function getUserInfo () {
 }
 
 function cardChangeHandler (event) {
-        $('.card').text('Card ending in ' + event.target.value)
+        $('.card').text('Card ending in ' + event.target.value);
+        $('.card').css("background-image", "url(\"cc1.jpg\")");
                 $('#toggle-activation').remove();
 
                 if (
@@ -109,6 +110,7 @@ function toggleActivationHandler() {
 
 function setCardImage (maskedNum) {
     $('.card').text('Card ending in ' + maskedNum);
+    $('.card').css("background-image", "url(\"cc1.jpg\")");
 }
 
 $(document).ready(function(){
