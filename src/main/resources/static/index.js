@@ -7,7 +7,7 @@ const userInfo = {
 };
 
 const userId = "012345";
-const cardId = "0001";
+//const cardId = "0001";
 
 function greet() {
     $('#greeting').text('Welcome, ' + userInfo.cardHolder + '!');
@@ -60,7 +60,8 @@ function cardChangeHandler (event) {
 
 };
 
-async function sendToggleData(toggleData) {
+async function sendToggleData(cardId, toggleData) {
+    console.log(cardId);
     let response;
 
     try{
@@ -80,7 +81,7 @@ function toggleActivationHandler() {
     $('#toggle-activation').change(
         function(){
             if (userInfo.cards[$('ons-select')[0].selectedIndex].active) {
-                sendToggleData({"active":false}).then((data) => {
+                sendToggleData(userInfo.cards[$('ons-select')[0].selectedIndex].cardId, {"active":false}).then((data) => {
                 console.log(data);
                     if(JSON.parse(data).message == "okay"){
                         userInfo.cards[$('ons-select')[0].selectedIndex].active = false;
@@ -91,7 +92,7 @@ function toggleActivationHandler() {
                 });
 
             } else {
-                sendToggleData({"active": true}).then((data) => {
+                sendToggleData(userInfo.cards[$('ons-select')[0].selectedIndex].cardId, {"active": true}).then((data) => {
                     console.log(data);
                     if(JSON.parse(data).message == "okay"){
                         userInfo.cards[$('ons-select')[0].selectedIndex].active = true;
