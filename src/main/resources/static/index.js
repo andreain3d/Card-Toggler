@@ -32,7 +32,6 @@ function getUserInfo () {
                 userInfo.cards[i].active = true;
             }
 
-            // Creating select options for each card
              for (let i=0; i < userInfo.cards.length; i++ ){
                  $('#select-input select').append($('<option>', {
                      value: userInfo.cards[i].maskedCardNumber,
@@ -40,7 +39,6 @@ function getUserInfo () {
                  }));
              }
 
-            // Initial display functions using retrieved data, setting currentCard
             greet();
             setCardImage($('ons-select')[0].value);
             currentCard = userInfo.cards[$('ons-select')[0].selectedIndex];
@@ -53,15 +51,12 @@ function getUserInfo () {
 }
 
 function cardChangeHandler (event) {
-        // Setting currentCard to newly selected card
+
         currentCard = userInfo.cards[$('ons-select')[0].selectedIndex];
 
-        // Changing card display
         $('.card').text('Card ending in ' + event.target.value);
         $('.card').css("background-image", "url(\"cc1.jpg\")");
 
-        // Setting toggle to correct initial display.
-        // Removes toggle and regenerates dynamically in correct position based on active status
         $('#toggle-activation').remove();
         if (
             currentCard.active
@@ -75,7 +70,6 @@ function cardChangeHandler (event) {
 
 };
 
-// Post request to /onoff to toggle
 async function sendToggleData(cardId, toggleData) {
     let response;
 
@@ -92,8 +86,7 @@ async function sendToggleData(cardId, toggleData) {
     };
 };
 
-// Sets listener for toggle change, calls the sendToggleData ajax request, 
-// then changes local data for card active status and toast alerts success/failure
+
 function toggleActivationHandler() { 
     $('#toggle-activation').change(
         function(){
@@ -132,7 +125,6 @@ function toggleActivationHandler() {
 }
 
 
-// Post request for /report
 async function sendReportData(reportData) {
     let response;
 
@@ -150,7 +142,6 @@ async function sendReportData(reportData) {
     };
 };
 
-// Builds data object to post to /request, then passes data to post call and toast alerts success/failure
 function reportSubmitHandler () {
     const reportData = JSON.stringify({"cardId": currentCard.cardId,
                         "cardStatus": $('#report-select')[0].value,
@@ -167,8 +158,6 @@ function reportSubmitHandler () {
         })
 };
 
-// Set up for ons-navigator
-// Passes currentCard across to report page
 document.addEventListener('init', function(event) {
     let page = event.target;
 
