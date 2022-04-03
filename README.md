@@ -1,5 +1,5 @@
 # Card Toggler
-
+![Main page](https://github.com/andreain3d/project-images/blob/main/images/toggler1.PNG?raw=true)  
 An SPA application that allows a user to freeze/unfreeze their credit cards and report issues.  
 
 ## Technologies Used

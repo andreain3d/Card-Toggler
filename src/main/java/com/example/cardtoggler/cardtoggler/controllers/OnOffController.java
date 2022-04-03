@@ -20,8 +20,7 @@ public class OnOffController {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.set("API-Key", apiKey);
-        String body = cardActiveData;
-        HttpEntity<String> request = new HttpEntity<String>(body, headers);
+        HttpEntity<String> request = new HttpEntity<String>(cardActiveData, headers);
         ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, request, String.class);
         if (response.getStatusCode() == HttpStatus.OK) {
             System.out.println("Request Successful.");

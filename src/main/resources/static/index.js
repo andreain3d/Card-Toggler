@@ -140,6 +140,7 @@ async function sendReportData(reportData) {
         response = await $.ajax({
             url: '/report',
             type: 'POST',
+            headers: { 'Content-Type': 'application/json' },
             data: reportData
         })
 
@@ -151,9 +152,9 @@ async function sendReportData(reportData) {
 
 // Builds data object to post to /request, then passes data to post call and toast alerts success/failure
 function reportSubmitHandler () {
-    const reportData = { "cardId": currentCard.cardId,
-                          "cardStatus": $('#report-select')[0].value,
-                           "comment": $('#report-details')[0].value };
+    const reportData = JSON.stringify({"cardId": currentCard.cardId,
+                        "cardStatus": $('#report-select')[0].value,
+                        "comment": $('#report-details')[0].value });
 
     sendReportData(reportData).then((data) => {
             $('#report-details')[0].value = "";
